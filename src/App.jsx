@@ -15,6 +15,33 @@ function App() {
       <div className="flex bg-black w-full text-white pl-5">
         <h4 className="font-bold text-lg py-4">React Blog</h4>
       </div>
+      <div className="flex p-2">
+        <button
+          className="bg-gray-200 p-1 mr-2"
+          onClick={() => {
+            // 숙제: 가나다순 정렬 버튼과 기능 만들기
+            let 글제목정렬 = [...글제목];
+            글제목정렬.sort();
+            console.log(글제목정렬);
+            글제목변경(글제목정렬);
+          }}
+        >
+          가나다순 정렬
+        </button>
+        <button
+          className="bg-gray-200 p-1"
+          onClick={() => {
+            // 숙제: 버튼 클릭시 여자 코트 추천 -> 남자 코트 추천으로 바꾸기
+            // let 글제목복사 = 글제목; -> 이렇게하면 같은 화살표를 사용하기 때문에 업데이트 되지 않음
+            // * state 가 array/object 면 깊은복사로 복사해서 사용해야함
+            let 글제목복사 = [...글제목];
+            글제목복사[0] = '남자 코트 추천';
+            글제목변경(글제목복사);
+          }}
+        >
+          글제목 변경
+        </button>
+      </div>
       <div className="list pl-5 text-left border-b border-b-gray-300">
         <h4 className="font-bold text-lg py-4">
           {글제목[0]}{' '}
@@ -33,14 +60,6 @@ function App() {
           </span>{' '}
           {따봉}
         </h4>
-        <div
-          onClick={() => {
-            // 숙제: 버튼 클릭시 여자 코트 추천 -> 남자 코트 추천으로 바꾸기
-            글제목변경(['남자 코트 추천', '강남 우동맛집', '파이썬독학']);
-          }}
-        >
-          글제목 변경
-        </div>
         <p className="py-3">1월 3일 발행</p>
       </div>
       <div className="list pl-5 text-left border-b border-b-gray-300">
