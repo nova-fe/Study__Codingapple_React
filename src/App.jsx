@@ -9,6 +9,8 @@ function App() {
     '파이썬독학',
   ]);
   let [따봉, 따봉변경] = useState(0);
+  // 2. UI의 현재 상태를 state 로 저장
+  let [modal, setModal] = useState(false);
 
   return (
     <div>
@@ -67,11 +69,16 @@ function App() {
         <p className="py-3">1월 3일 발행</p>
       </div>
       <div className="list pl-5 text-left border-b border-b-gray-300">
-        <h4 className="font-bold text-lg py-4">{글제목[2]}</h4>
+        <h4 onClick={
+          // 숙제: 제목 또 누르면 모달 닫히도록
+          () => { setModal(!modal) }
+        } className="font-bold text-lg py-4">{글제목[2]}</h4>
         <p className="py-3">1월 3일 발행</p>
       </div>
 
-      <Modal></Modal>
+      {
+        modal === true ? <Modal /> : null
+      }
     </div>
   );
 }
