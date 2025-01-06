@@ -11,6 +11,7 @@ function App() {
   let [따봉, 따봉변경] = useState([0, 0, 0]);
   let [modal, setModal] = useState(false);
   let [title, setTitle] = useState(0);
+  let [inputVal, setInputVal] = useState('');
 
   function changeTitle() {
     let copy = [...글제목];
@@ -54,27 +55,39 @@ function App() {
         글제목.map(function (a, i) {
           // i: 0, 1, 2
           return (
-            <>
-              <div key={i} className="list pl-5 text-left border-b border-b-gray-300">
-                <h4 className="font-bold text-lg py-4" onClick={() => {
-                  setModal(!modal);
-                  setTitle(i);
-                }}>
-                  {글제목[i]}
-                  <span className='cursor-pointer' onClick={() => {
-                    let 따봉복사 = [...따봉]
-                    따봉복사[i] = 따봉복사[i] + 1;
-                    따봉변경(따봉복사);
-                  }}>👍</span> {따봉[i]}
-                </h4>
-                <p className="py-3">1월 3일 발행</p>
-              </div>
-            </>
+            <div key={i} className="list pl-5 text-left border-b border-b-gray-300">
+              <h4 className="font-bold text-lg py-4" onClick={() => {
+                setModal(!modal);
+                setTitle(i);
+              }}>
+                {글제목[i]}
+                <span className='cursor-pointer' onClick={(e) => {
+                  e.stopPropagation();  // 이벤트 버블링 막기
+                  let 따봉복사 = [...따봉]
+                  따봉복사[i] = 따봉복사[i] + 1;
+                  따봉변경(따봉복사);
+                }}>👍</span> {따봉[i]}
+              </h4>
+              <p className="py-3">1월 3일 발행</p>
+              <button className='bg-gray-200 mb-2 p-1' onClick={() => {
+                let copy = [...글제목];
+                copy.splice(i, 1);
+                글제목변경(copy)
+              }}>삭제</button>
+            </div>
           )
         })
       }
 
-      {/* 글 내용 모달 */}
+      <input className='border' type='text' onChange={(e) => {
+        setInputVal(e.target.value);
+      }} />
+      <button onClick={() => {
+        let copy = [...글제목];
+        copy.unshift(inputVal);
+        글제목변경(copy);
+      }}>글발행</button>
+
       {
         modal === true ? <Modal 글제목={글제목} title={title} changeTitle={changeTitle} /> : null
       }
