@@ -8,9 +8,13 @@ function App() {
     '강남 우동맛집',
     '파이썬독학',
   ]);
-  let [따봉, 따봉변경] = useState(0);
+  let [따봉, 따봉변경] = useState([0, 0, 0]);
   // 2. UI의 현재 상태를 state 로 저장
   let [modal, setModal] = useState(false);
+
+  [1, 2, 3].map(function () {
+    return '123'  // return값은 array에 담음(*원본은 수정되지 않음)
+  })
 
   return (
     <div>
@@ -44,7 +48,7 @@ function App() {
           글제목 변경
         </button>
       </div>
-      <div className="list pl-5 text-left border-b border-b-gray-300">
+      {/* <div className="list pl-5 text-left border-b border-b-gray-300">
         <h4 className="font-bold text-lg py-4">
           {글제목[0]}{' '}
           <span
@@ -74,7 +78,29 @@ function App() {
           () => { setModal(!modal) }
         } className="font-bold text-lg py-4">{글제목[2]}</h4>
         <p className="py-3">1월 3일 발행</p>
-      </div>
+      </div> */}
+
+      {
+        // 반복시 map 사용, 리액트에서는 return 에 html 넣으면 해당 부분들을 보여줌
+        // map콜백함수의 두번째 파라미터는 반복문 돌 때마다 0부터 1씩 증가하는 정수
+        글제목.map(function (a, i) {
+          // index: 0, 1, 2
+          return (
+            <div key={i} className="list pl-5 text-left border-b border-b-gray-300">
+              <h4 className="font-bold text-lg py-4">
+                {글제목[i]}
+                {/* 숙제: 각각 다른 따봉 state 적용하기 */}
+                <span className='cursor-pointer' onClick={() => {
+                  let 따봉복사 = [...따봉]
+                  따봉복사[i] = 따봉복사[i] + 1;
+                  따봉변경(따봉복사);
+                }}>👍</span> {따봉[i]}
+              </h4>
+              <p className="py-3">1월 3일 발행</p>
+            </div>
+          )
+        })
+      }
 
       {
         modal === true ? <Modal /> : null
