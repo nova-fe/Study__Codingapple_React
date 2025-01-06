@@ -70,8 +70,22 @@ function App() {
         <h4 className="font-bold text-lg py-4">{글제목[2]}</h4>
         <p className="py-3">1월 3일 발행</p>
       </div>
+
+      <Modal></Modal>
     </div>
   );
+}
+
+// const Modal = () => { return () }
+
+function Modal() {
+  return (
+    <div className="mt-5 p-5 bg-gray-200 text-left">
+      <h4>제목</h4>
+      <p>날짜</p>
+      <p>상세내용</p>
+    </div>
+  )
 }
 
 export default App;
