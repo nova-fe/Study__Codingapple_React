@@ -3,23 +3,23 @@ import './App.css';
 
 function App() {
   // let post = '강남 우동 맛집';
-  let [글제목, 글제목변경] = useState([
+  let [title, setTitle] = useState([
     '여자 코트 추천',
     '강남 우동맛집',
     '파이썬독학',
   ]);
   let defaultDate = new Date('2025-01-01');
-  let [따봉, 따봉변경] = useState([0, 0, 0]);
+  let [like, setLike] = useState([0, 0, 0]);
   let [modal, setModal] = useState(false);
-  let [title, setTitle] = useState(0);
+  let [titleIndex, setTitleIndex] = useState(0);
   let [inputVal, setInputVal] = useState('');
   let [date, setDate] = useState([defaultDate, defaultDate, defaultDate]);
 
 
   function changeTitle() {
-    let copy = [...글제목];
+    let copy = [...title];
     copy[0] = "남자 코트 추천"
-    글제목변경(copy);
+    setTitle(copy);
   }
 
   return (
@@ -31,10 +31,10 @@ function App() {
         <button
           className="bg-gray-200 p-1 mr-2"
           onClick={() => {
-            let 글제목정렬 = [...글제목];
-            글제목정렬.sort();
-            console.log(글제목정렬);
-            글제목변경(글제목정렬);
+            let copyTitle = [...title];
+            copyTitle.sort();
+            console.log(copyTitle);
+            setTitle(copyTitle);
           }}
         >
           가나다순 정렬
@@ -43,39 +43,39 @@ function App() {
           className="bg-gray-200 p-1"
           onClick={() => {
             // * state 가 array/object 면 깊은복사로 복사해서 사용해야함
-            let 글제목복사 = [...글제목];
-            글제목복사[0] = '남자 코트 추천';
-            글제목변경(글제목복사);
+            let copyTitle = [...title];
+            copyTitle[0] = '남자 코트 추천';
+            setTitle(copyTitle);
           }}
         >
-          글제목 변경
+          title 변경
         </button>
       </div>
 
       {
         // 반복시 map 사용, 리액트에서는 return 에 html 넣으면 해당 부분들을 보여줌
         // map콜백함수의 두번째 파라미터는 반복문 돌 때마다 0부터 1씩 증가하는 정수
-        글제목.map(function (a, i) {
+        title.map(function (a, i) {
           // i: 0, 1, 2
           return (
             <div key={i} className="list pl-5 text-left border-b border-b-gray-300">
               <h4 className="font-bold text-lg py-4" onClick={() => {
                 setModal(!modal);
-                setTitle(i);
+                setTitleIndex(i);
               }}>
-                {글제목[i]}
+                {title[i]}
                 <span className='cursor-pointer' onClick={(e) => {
                   e.stopPropagation();  // 이벤트 버블링 막기
-                  let 따봉복사 = [...따봉]
-                  따봉복사[i] = 따봉복사[i] + 1;
-                  따봉변경(따봉복사);
-                }}>👍</span> {따봉[i]}
+                  let copyLike = [...like]
+                  copyLike[i] = copyLike[i] + 1;
+                  setLike(copyLike);
+                }}>👍</span> {like[i]}
               </h4>
               <p className="py-3">{(date[i].getMonth()) + 1}월 {date[i].getDate()}일 발행</p>
               <button className='bg-gray-200 mb-2 p-1' onClick={() => {
-                let copy = [...글제목];
-                copy.splice(i, 1);
-                글제목변경(copy)
+                let copyTitle = [...title];
+                copyTitle.splice(i, 1);
+                setTitle(copyTitle);
               }}>삭제</button>
             </div>
           )
@@ -87,20 +87,22 @@ function App() {
       }} />
       <button onClick={() => {
         if (inputVal !== '') {
-          let copy = [...글제목];
-          copy.unshift(inputVal);
-          글제목변경(copy);
-          let goodCopy = [...따봉];
-          goodCopy.unshift(0);
-          따봉변경(goodCopy);
-          let dateCopy = [...date];
-          dateCopy.unshift(new Date());
-          setDate(dateCopy);
+          let copyTitle = [...title];
+          copyTitle.unshift(inputVal);
+          setTitle(copyTitle);
+
+          let copyLike = [...like];
+          copyLike.unshift(0);
+          setLike(copyLike);
+
+          let copyDate = [...date];
+          copyDate.unshift(new Date());
+          setDate(copyDate);
         }
       }}>글발행</button>
 
       {
-        modal === true ? <Modal 글제목={글제목} title={title} changeTitle={changeTitle} /> : null
+        modal === true ? <Modal title={title} titleIndex={titleIndex} changeTitle={changeTitle} /> : null
       }
     </div>
   );
@@ -111,7 +113,7 @@ function App() {
 function Modal(props) {
   return (
     <div className="mt-5 p-5 bg-gray-200 text-left">
-      <h4>{props.글제목[props.title]}</h4>
+      <h4>{props.title[props.titleIndex]}</h4>
       <p>날짜</p>
       <p>상세내용</p>
       <button onClick={props.changeTitle}>글수정</button>
