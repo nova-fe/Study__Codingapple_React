@@ -12,9 +12,15 @@ function App() {
   // 2. UI의 현재 상태를 state 로 저장
   let [modal, setModal] = useState(false);
 
-  [1, 2, 3].map(function () {
-    return '123'  // return값은 array에 담음(*원본은 수정되지 않음)
-  })
+  // [1, 2, 3].map(function () {
+  //   return '123'  // return값은 array에 담음(*원본은 수정되지 않음)
+  // })
+
+  function changeTitle() {
+    let copy = [...글제목];
+    copy[0] = "남자 코트 추천"
+    글제목변경(copy);
+  }
 
   return (
     <div>
@@ -87,7 +93,7 @@ function App() {
           // index: 0, 1, 2
           return (
             <div key={i} className="list pl-5 text-left border-b border-b-gray-300">
-              <h4 className="font-bold text-lg py-4">
+              <h4 className="font-bold text-lg py-4" onClick={() => { setModal(!modal) }}>
                 {글제목[i]}
                 {/* 숙제: 각각 다른 따봉 state 적용하기 */}
                 <span className='cursor-pointer' onClick={() => {
@@ -103,7 +109,7 @@ function App() {
       }
 
       {
-        modal === true ? <Modal /> : null
+        modal === true ? <Modal 글제목={글제목} changeTitle={changeTitle} /> : null
       }
     </div>
   );
@@ -111,12 +117,14 @@ function App() {
 
 // const Modal = () => { return () }
 
-function Modal() {
+function Modal(props) {
   return (
     <div className="mt-5 p-5 bg-gray-200 text-left">
-      <h4>제목</h4>
+      <h4>{props.글제목[0]}</h4>
       <p>날짜</p>
       <p>상세내용</p>
+      {/* 숙제: 글수정 버튼 클릭시 첫 글 제목이 '남자 코트 추천으로 바뀌어야함 */}
+      <button onClick={props.changeTitle}>글수정</button>
     </div>
   )
 }
