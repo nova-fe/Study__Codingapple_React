@@ -8,10 +8,13 @@ function App() {
     '강남 우동맛집',
     '파이썬독학',
   ]);
+  let defaultDate = new Date('2025-01-01');
   let [따봉, 따봉변경] = useState([0, 0, 0]);
   let [modal, setModal] = useState(false);
   let [title, setTitle] = useState(0);
   let [inputVal, setInputVal] = useState('');
+  let [date, setDate] = useState([defaultDate, defaultDate, defaultDate]);
+
 
   function changeTitle() {
     let copy = [...글제목];
@@ -68,7 +71,7 @@ function App() {
                   따봉변경(따봉복사);
                 }}>👍</span> {따봉[i]}
               </h4>
-              <p className="py-3">1월 3일 발행</p>
+              <p className="py-3">{(date[i].getMonth()) + 1}월 {date[i].getDate()}일 발행</p>
               <button className='bg-gray-200 mb-2 p-1' onClick={() => {
                 let copy = [...글제목];
                 copy.splice(i, 1);
@@ -83,9 +86,17 @@ function App() {
         setInputVal(e.target.value);
       }} />
       <button onClick={() => {
-        let copy = [...글제목];
-        copy.unshift(inputVal);
-        글제목변경(copy);
+        if (inputVal !== '') {
+          let copy = [...글제목];
+          copy.unshift(inputVal);
+          글제목변경(copy);
+          let goodCopy = [...따봉];
+          goodCopy.unshift(0);
+          따봉변경(goodCopy);
+          let dateCopy = [...date];
+          dateCopy.unshift(new Date());
+          setDate(dateCopy);
+        }
       }}>글발행</button>
 
       {
