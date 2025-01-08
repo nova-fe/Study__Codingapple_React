@@ -4,9 +4,9 @@ import './App.css';
 import bg from './img/bg.png';
 import { useState } from 'react';
 import data from './data.js';
-import { Routes, Route, Link, useNavigate, Outlet } from 'react-router-dom';
-import Card from './components/card.js';
-import Detail from './pages/detail.js';
+import { Routes, Route, useNavigate } from 'react-router-dom';
+import Card from './components/Card.js';
+import Detail from './pages/Detail.js';
 
 function App() {
   let [shoes] = useState(data);
@@ -81,7 +81,9 @@ function App() {
             </>
           }
         />
-        <Route path="/detail" element={<Detail />} />
+        {/* /:파라미터 -> URL파라미터 */}
+        <Route path="/detail/:id" element={<Detail shoes={shoes} />} />
+
         {/* <Route path="*" element={<div>없는페이지(404)</div>} /> */}
         {/* <Route path="/about/member" element={<About />} />
         <Route path="/about/location" element={<About />} /> */}
@@ -94,28 +96,10 @@ function App() {
          * => /about/member로 접속시 path="/about"에 있는 element 와 path="member"에 있는 element를 동시에 보여줌(2개가 보여짐)
          * => <About/> 안에 <div>member 페이지</div>
          */}
-        <Route path="/about" element={<About />}>
-          {/* /about/member */}
+        {/* <Route path="/about" element={<About />}>
           <Route path="member" element={<div>member 페이지</div>} />
-          {/* /about/location */}
           <Route path="location" element={<div>location 페이지</div>} />
-        </Route>
-
-        <Route
-          path="/event"
-          element={
-            <div>
-              <h4>오늘의 이벤트</h4>
-              <Outlet></Outlet>
-            </div>
-          }
-        >
-          <Route
-            path="one"
-            element={<div>첫 주문시 양배추즙 서비스</div>}
-          ></Route>
-          <Route path="two" element={<div>생일기념 쿠폰받기</div>}></Route>
-        </Route>
+        </Route> */}
       </Routes>
     </div>
   );
@@ -123,12 +107,12 @@ function App() {
 
 export default App;
 
-function About() {
-  return (
-    <div>
-      <h4>회사정보 페이지</h4>
-      {/* Outlet: Nested Routes가 어디에 보여줄지 알려줌 */}
-      <Outlet></Outlet>
-    </div>
-  );
-}
+// function About() {
+//   return (
+//     <div>
+//       <h4>회사정보 페이지</h4>
+//       {/* Outlet: Nested Routes가 어디에 보여줄지 알려줌 */}
+//       <Outlet></Outlet>
+//     </div>
+//   );
+// }
