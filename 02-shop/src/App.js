@@ -7,9 +7,10 @@ import data from './data.js';
 import { Routes, Route, useNavigate } from 'react-router-dom';
 import Card from './components/Card.js';
 import Detail from './pages/Detail.js';
+import axios from 'axios'
 
 function App() {
-  let [shoes] = useState(data);
+  let [shoes, setShoes] = useState(data);
   let navigate = useNavigate(); // 페이지 이동을 도와줌
 
   return (
@@ -23,6 +24,23 @@ function App() {
             <Route />
           </Routes>
       */}
+
+      {/* <Route path="*" element={<div>없는페이지(404)</div>} /> */}
+      {/* <Route path="/about/member" element={<About />} />
+      <Route path="/about/location" element={<About />} /> */}
+
+      {/**
+       * :: Nested Routes (서브페이지 개념처럼 사용)
+       * 언제 사용? 여러 유사한 페이지 필요할때
+       * 장점1: route 작성이 간단해짐
+       * 장점2: mested route 접속시엔 element 2개가 보임
+       * => /about/member로 접속시 path="/about"에 있는 element 와 path="member"에 있는 element를 동시에 보여줌(2개가 보여짐)
+       * => <About/> 안에 <div>member 페이지</div>
+       */}
+      {/* <Route path="/about" element={<About />}>
+        <Route path="member" element={<div>member 페이지</div>} />
+        <Route path="location" element={<div>location 페이지</div>} />
+      </Route> */}
 
       {/**
        * :: Link: 페이지 이동 버튼
@@ -78,29 +96,25 @@ function App() {
                   })}
                 </div>
               </div>
+
+              <button onClick={() => {
+                axios.get('https://codingapple1.github.io/shop/data2.json')
+                .then((result) => {
+                  const copy = [...shoes];
+                  const copy2 = copy.concat(result.data);
+                  setShoes(copy2);
+                })
+                .catch((error) => {
+                  console.log(error.message)
+                })
+              }}>더보기</button>
             </>
           }
         />
         {/* /:파라미터 -> URL파라미터 */}
         <Route path="/detail/:id" element={<Detail shoes={shoes} />} />
-
-        {/* <Route path="*" element={<div>없는페이지(404)</div>} /> */}
-        {/* <Route path="/about/member" element={<About />} />
-        <Route path="/about/location" element={<About />} /> */}
-
-        {/**
-         * :: Nested Routes (서브페이지 개념처럼 사용)
-         * 언제 사용? 여러 유사한 페이지 필요할때
-         * 장점1: route 작성이 간단해짐
-         * 장점2: mested route 접속시엔 element 2개가 보임
-         * => /about/member로 접속시 path="/about"에 있는 element 와 path="member"에 있는 element를 동시에 보여줌(2개가 보여짐)
-         * => <About/> 안에 <div>member 페이지</div>
-         */}
-        {/* <Route path="/about" element={<About />}>
-          <Route path="member" element={<div>member 페이지</div>} />
-          <Route path="location" element={<div>location 페이지</div>} />
-        </Route> */}
       </Routes>
+
     </div>
   );
 }
