@@ -12,6 +12,8 @@ import axios from 'axios'
 function App() {
   let [shoes, setShoes] = useState(data);
   let navigate = useNavigate(); // 페이지 이동을 도와줌
+  const [count, setCount] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
 
   return (
     <div className="App">
@@ -97,16 +99,49 @@ function App() {
                 </div>
               </div>
 
+              {
+                isLoading && <div class="spinner-border" role="status"></div>
+              }
+                            
+
               <button onClick={() => {
-                axios.get('https://codingapple1.github.io/shop/data2.json')
-                .then((result) => {
-                  const copy = [...shoes];
-                  const copy2 = copy.concat(result.data);
-                  setShoes(copy2);
-                })
-                .catch((error) => {
-                  console.log(error.message)
-                })
+                setIsLoading(true);
+                setCount(count + 1);
+                if(count === 0) {
+                  axios.get(`https://codingapple1.github.io/shop/data2.json`)
+                  .then((result) => {
+                    const copy = [...shoes, ...result.data];  // 결과.data는 원래 JSON인데 axios 에서 알아서 변환해줌
+                    setShoes(copy);
+
+                    setIsLoading(false);  // 로딩중 UI 숨기기
+                  })
+                  .catch((error) => {
+                    console.log(error.message)
+                  })
+                } else if (count === 1) {
+                  axios.get(`https://codingapple1.github.io/shop/data3.json`)
+                  .then((result) => {
+                    const copy = [...shoes, ...result.data];  // 결과.data는 원래 JSON인데 axios 에서 알아서 변환해줌
+                    setShoes(copy);
+  
+                    setIsLoading(false); // 로딩중 UI 숨기기
+                  })
+                  .catch((error) => {
+                    console.log(error.message);
+                  })
+                } else {
+                  alert("상품 없음");
+                }
+
+
+                // * 서버로 데이터전송
+                // axios.post('/url1', {name: 'kim'})
+                // * 동시에 ajax 요청 여러개
+                // Promise.all([axios.get('/url1'),axios.get('/url2')]).then((result) => {})
+
+                // * fetch 를 사용할 경우는 .json()을 사용한 변환 필요
+                // fetch('URL').then(결과 => 결과.json()).then((결과) => { console.log(결과) } )
+
               }}>더보기</button>
             </>
           }
