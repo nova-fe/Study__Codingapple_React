@@ -1,11 +1,11 @@
 import { useParams } from 'react-router-dom';
 import { useState, useEffect } from 'react';
+import { Nav,  } from 'react-bootstrap';
 
 
 export default function Detail(props) {
   let [alert, setAlert] = useState(true);
-  let [text, setText] = useState("");
-  let [isDanger, setIsDanger] = useState(false);
+  let [탭, 탭변경] = useState(0)
 
   useEffect(() => {
     // mount, update 시 코드 실행
@@ -20,17 +20,6 @@ export default function Detail(props) {
       // 기존 데이터요청은 제거해주세요~ 
     }
   }, []); // 1회만 실행되고 싶으면 빈 배열 넣기
-
-  useEffect(() => {
-    if(isNaN(text)){  // text가 문자면 true, 숫자면 false
-      setIsDanger(true);
-    } else {
-      setIsDanger(false);
-    }
-  }, [text])
-  
-  
-
 
 
   let { id } = useParams(); // 유저가 URL파라미터에 입력한 것을 가져옴
@@ -60,12 +49,6 @@ export default function Detail(props) {
             alt="상품이미지"
           />
         </div>
-        {
-          isDanger && <div className='alert alert-danger'>숫자만 입력하세요</div>
-        }
-        <input onChange={(e) => {
-          setText(e.target.value);
-        }} />
         <div className="col-md-6">
           <h4 className="pt-5">{prod.title}</h4>
           <p>{prod.content}</p>
@@ -73,6 +56,35 @@ export default function Detail(props) {
           <button className="btn btn-danger">주문하기</button>
         </div>
       </div>
+
+      <Nav variant="tabs"  defaultActiveKey="link0">
+        <Nav.Item>
+          <Nav.Link onClick={() => {탭변경(0)}} eventKey="link0">버튼0</Nav.Link>
+        </Nav.Item>
+        <Nav.Item>
+          <Nav.Link onClick={() => {탭변경(1)}} eventKey="link1">버튼1</Nav.Link>
+        </Nav.Item>
+        <Nav.Item>
+          <Nav.Link onClick={() => {탭변경(2)}} eventKey="link2">버튼2</Nav.Link>
+        </Nav.Item>
+      </Nav>
+
+      <TabContent 탭={탭} />
     </div>
   );
+}
+
+
+function TabContent({탭}){
+  // if (탭 === 0){
+  //   return <div>내용0</div>
+  // }
+  // if (탭 === 1){
+  //   return <div>내용1</div>
+  // }
+  // if (탭 === 2){
+  //   return <div>내용2</div>
+  // }
+
+  return [ <div>내용0</div>, <div>내용1</div>, <div>내용2</div> ][탭]
 }
