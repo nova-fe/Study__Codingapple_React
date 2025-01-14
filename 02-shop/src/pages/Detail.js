@@ -1,6 +1,18 @@
 import { useParams } from 'react-router-dom';
+import { useState, useEffect } from 'react';
 
 export default function Detail(props) {
+
+  useEffect(() => {
+    // mount, update 시 코드 실행
+    setTimeout(() => {
+      document.querySelector('.alert').style.display = "none";
+    }, 2000)
+  });
+
+
+  let [count, setCount] = useState(0);
+
   let { id } = useParams(); // 유저가 URL파라미터에 입력한 것을 가져옴
   let numId = Number(id);
   let prod = props.shoes.find(item => {
@@ -9,6 +21,18 @@ export default function Detail(props) {
 
   return (
     <div className="container">
+      {/* Detail 페이지 방문 후 2초 지나면 아래 div 숨기기 */}
+      <div className='alert alert-warning'>
+        2초이내 구매시 할인
+      </div>
+      {count}
+      <button
+        onClick={() => {
+          setCount(count + 1);
+        }}
+      >
+        버튼
+      </button>
       <div className="row">
         <div className="col-md-6">
           <img
