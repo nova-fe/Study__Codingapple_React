@@ -2,15 +2,19 @@ import { Navbar, Container, Nav } from 'react-bootstrap';
 import './App.css';
 // 1) jsx 안에서 이미지 불러오기: import 작명 from '이미지경로';
 import bg from './img/bg.png';
-import { useState } from 'react';
+import { createContext, useState } from 'react';
 import data from './data.js';
 import { Routes, Route, useNavigate } from 'react-router-dom';
 import Card from './components/Card.js';
 import Detail from './pages/Detail.js';
 import axios from 'axios'
 
+// Context 세팅 1. createContext로 Context 만들기
+export let Context1 = createContext(); // state보관함(Context)를 만들어줌
+
 function App() {
   let [shoes, setShoes] = useState(data);
+  let [재고] = useState(10, 11, 12);
   let navigate = useNavigate(); // 페이지 이동을 도와줌
   const [count, setCount] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
@@ -100,7 +104,7 @@ function App() {
               </div>
 
               {
-                isLoading && <div class="spinner-border" role="status"></div>
+                isLoading && <div className="spinner-border" role="status"></div>
               }
                             
 
@@ -147,7 +151,14 @@ function App() {
           }
         />
         {/* /:파라미터 -> URL파라미터 */}
-        <Route path="/detail/:id" element={<Detail shoes={shoes} />} />
+        <Route path="/detail/:id" element={
+          // Context 세팅 2. <Context>로 원하는 컴포넌트 감싸기
+          // Context 세팅 3. 원하는 state 를 value 안에 넣기
+          // => 안에 있는 모든 컴포넌트는 재고, shoes 사용 가능
+          <Context1.Provider value={{재고 }}>
+            <Detail shoes={shoes} />
+          </Context1.Provider>
+          } />
       </Routes>
 
     </div>
