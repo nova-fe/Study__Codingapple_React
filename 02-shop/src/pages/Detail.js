@@ -1,9 +1,6 @@
 import { useParams } from 'react-router-dom';
-import { useState, useEffect, useContext } from 'react';
+import { useState, useEffect } from 'react';
 import { Nav,  } from 'react-bootstrap';
-
-// Context 사용하여 state 사용
-import {Context1} from './../App.js'
 
 export default function Detail(props) {
 
@@ -80,8 +77,6 @@ export default function Detail(props) {
 
 function TabContent({탭}){
   let [fade, setFade] = useState('');
-    // 보관함 안에 있던 state 들이 나옴
-    let {재고} = useContext(Context1) // 보관함 해체 {state1, state2, ...}
 
   useEffect(()=>{
     setTimeout(()=>{setFade('end')}, 10)
@@ -92,7 +87,7 @@ function TabContent({탭}){
 
   return (
     <div className={'start ' + fade}>
-      {[ <div>{재고}</div>, <div>내용1</div>, <div>내용2</div> ][탭] }
+      {[ <div>내용0</div>, <div>내용1</div>, <div>내용2</div> ][탭] }
     </div>
   )
 }
